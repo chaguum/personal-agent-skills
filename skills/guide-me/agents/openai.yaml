@@ -2,3 +2,6 @@ interface:
   display_name: "Guide Me"
   short_description: "Trancher un doute technique local"
   default_prompt: "Use $guide-me to arbitrate this technical doubt against the current repo plan."
+
+policy:
+  allow_implicit_invocation: true

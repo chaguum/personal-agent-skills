@@ -1,118 +1,90 @@
 ---
 name: guide-me
-description: Aider a trancher un doute technique pendant une tache de conception ou de developpement, en tenant compte du plan existant, souvent dans PROGRESS.md, puis recommander une solution, demander validation si le choix change le cap, ou implementer directement si la solution est evidente. Utiliser quand l'utilisateur expose une hypothese, une hesitation entre plusieurs solutions, un doute sur le plan courant, ou demande a Codex de choisir la meilleure voie sans relancer un plan complet.
+description: Utiliser lorsqu’un doute technique local, une hésitation entre plusieurs solutions ou une hypothèse bloque une tâche de conception ou de développement en cours.
 ---
 
-Aide-moi a trancher un doute technique dans le contexte du travail en cours.
+Tranche un doute technique local sans rouvrir inutilement le plan complet. Recommande une solution unique, puis avance lorsqu’aucune validation utilisateur n’est nécessaire.
 
-Objectif : comprendre le plan existant, arbitrer le doute, recommander une solution concrete, puis avancer sans rouvrir inutilement toute la conception.
+## 1. Établir le contexte
 
-## Contexte a lire
+1. Lis `PROGRESS.md` dans le dépôt courant s’il existe, sinon cherche-le dans les dossiers parents proches.
+2. Inspecte les fichiers, tests, logs et documents nécessaires pour vérifier les hypothèses.
+3. Si le doute vise une partie précise du code, inspecte-la avant de répondre.
+4. Ne demande pas une information qui peut être trouvée localement.
 
-Avant de trancher, cherche le contexte local pertinent :
+Cette étape est terminée lorsque le plan actuel, le doute à trancher et les faits qui contraignent la décision peuvent être résumés clairement.
 
-1. Lis `PROGRESS.md` dans le repo courant si present.
-2. Si absent, cherche un `PROGRESS.md` dans les dossiers parents proches.
-3. Lis les fichiers, tests, logs ou docs locales necessaires pour verifier les hypotheses.
-4. Si le doute porte sur une partie precise du code, inspecte cette partie avant de repondre.
+## 2. Trancher
 
-Ne demande pas a l'utilisateur une information qui peut etre trouvee dans le repo.
+1. Reformule le doute en une phrase.
+2. Résume brièvement ce que le plan actuel établit déjà.
+3. Identifie uniquement les options qui changent réellement l’implémentation, l’architecture, les tests ou le risque.
+4. Évalue-les selon :
+   - la correction fonctionnelle ;
+   - la simplicité ;
+   - la cohérence avec le code existant ;
+   - le risque de régression ;
+   - le coût de test et de maintenance ;
+   - l’impact sur le plan courant.
+5. Recommande une solution unique et justifie-la. Explique pourquoi les alternatives sont moins bonnes seulement si cela éclaire la décision.
+6. Si deux options restent proches, choisis celle qui minimise le changement et respecte le mieux les patterns existants.
 
-## Workflow
+Cette étape est terminée lorsque la recommandation, ses preuves et son impact sur le plan sont explicites.
 
-1. Reformule le doute a trancher en une phrase.
-2. Resume brievement ce que le plan actuel semble deja etablir.
-3. Identifie les options realistes qui changent concretement l'implementation, l'architecture, les tests ou le risque.
-4. Evalue les options selon :
-   - correction fonctionnelle ;
-   - simplicite ;
-   - coherence avec le code existant ;
-   - risque de regression ;
-   - cout de test et de maintenance ;
-   - impact sur le plan courant.
-5. Recommande une solution unique.
-6. Explique pourquoi cette solution est preferable.
-7. Explique pourquoi les autres options sont moins bonnes, seulement si cela aide la decision.
-8. Decide s'il faut demander validation avant implementation.
-9. Implemente la solution choisie si la validation n'est pas necessaire ou si l'utilisateur a donne son accord.
-10. Verifie avec les tests, commandes ou checks pertinents.
-11. Mets a jour `PROGRESS.md` si la decision prise doit rester dans le contexte durable du projet.
+## 3. Décider s’il faut agir
 
-## Validation utilisateur
+Demande une validation avant d’implémenter si :
 
-Demande validation avant d'implementer si :
-- la solution modifie le plan existant de maniere significative ;
+- la solution change significativement le plan ;
 - plusieurs options restent raisonnables avec des compromis produit, architecture ou UX ;
-- le changement a un impact large ou difficile a annuler ;
-- la decision depend d'une intention utilisateur qui ne peut pas etre deduite du code ;
-- l'utilisateur demande explicitement de valider avant changement.
+- le changement est large ou difficile à annuler ;
+- la décision dépend d’une intention utilisateur introuvable dans le dépôt ;
+- l’utilisateur demande explicitement une validation.
 
-Ne demande pas validation si :
-- la solution est evidente apres inspection ;
-- le changement est local, reversible et coherent avec le plan ;
-- il s'agit de corriger une erreur manifeste ;
-- il s'agit d'appliquer une decision deja presente dans `PROGRESS.md` ;
-- attendre une validation ralentirait seulement une decision technique claire.
+Si une seule information utilisateur bloque la décision, pose uniquement cette question.
 
-## Format si validation necessaire
+Sinon, implémente directement lorsque la solution est claire après inspection, locale, réversible et cohérente avec le plan. Cela inclut la correction d’une erreur manifeste et l’application d’une décision déjà documentée.
 
-Presente :
+Si une validation est nécessaire, présente puis arrête-toi :
 
-## Decision recommandee
+## Décision recommandée
 ## Pourquoi cette solution
 ## Pourquoi pas les alternatives
 ## Impact sur le plan actuel
-## Changement propose
-## Mise a jour PROGRESS.md proposee, si applicable
+## Changement proposé
+## Mise à jour de PROGRESS.md proposée, si applicable
 
-Puis attends l'accord utilisateur avant d'implementer.
+Ne code rien et ne modifie pas `PROGRESS.md` avant l’accord utilisateur.
 
-## Format si validation non necessaire
+Si aucune validation n’est nécessaire ou si elle a déjà été donnée :
 
-Implemente directement, puis termine avec :
+1. implémente la solution ;
+2. vérifie-la avec les tests, commandes ou contrôles pertinents ;
+3. poursuis seulement lorsque ces vérifications sont terminées ou que leurs limites sont explicitement établies.
 
-## Decision retenue
-## Changement effectue
-## Verification
-## Mise a jour PROGRESS.md
+## 4. Persister la décision
+
+Après une implémentation, mets à jour le `PROGRESS.md` existant lorsque la décision modifie, précise ou remplace le plan courant. La mise à jour doit rester concise :
+
+- décision retenue et raison ;
+- changement appliqué ;
+- vérification effectuée ;
+- impact sur les prochaines étapes ;
+- risque restant, si pertinent.
+
+Ne le modifie pas pour un changement mécanique, une correction locale sans impact sur le plan, une vérification sans conséquence ou une décision déjà correctement documentée.
+
+Termine avec :
+
+## Décision retenue
+## Changement effectué
+## Vérification
+## Mise à jour de PROGRESS.md
 ## Risque restant
 
-## Mise a jour du contexte
+## Limites
 
-Si un `PROGRESS.md` existe et que la decision prise modifie, precise ou remplace une partie du plan courant, mets-le a jour apres implementation.
-
-La mise a jour doit rester concise :
-- decision retenue ;
-- raison courte ;
-- changement applique ;
-- verification effectuee ;
-- impact sur les prochaines etapes, si pertinent.
-
-Ne mets pas a jour `PROGRESS.md` pour :
-- un changement purement mecanique ;
-- une correction locale sans impact sur le plan ;
-- une verification sans consequence ;
-- une decision deja documentee correctement.
-
-Si une validation utilisateur etait necessaire, propose d'abord la mise a jour `PROGRESS.md` avec le changement recommande. Ne modifie `PROGRESS.md` qu'apres accord.
-
-## Regles de decision
-
-- Preserve le plan existant par defaut.
-- Ne transforme pas le doute en nouveau plan complet sauf si le plan actuel est manifestement invalide.
-- Tranche clairement : ne liste pas seulement des possibilites.
-- Si une option est clairement meilleure, choisis-la.
-- Si deux options sont proches, choisis celle qui minimise le changement et respecte le mieux les patterns existants.
-- Si la bonne decision est de ne rien changer, dis-le explicitement.
-- Si une hypothese est verifiable localement, verifie-la avant de recommander.
-- Si une seule question utilisateur bloque vraiment la decision, pose uniquement cette question.
-- Si l'utilisateur propose une solution fragile ou incoherente avec le code, dis-le clairement et recommande une meilleure voie.
-- Ne code rien si la decision exige une validation utilisateur qui n'a pas encore ete donnee.
-
-## Relation avec les autres skills
-
-Utilise `guide-me` pour debloquer une decision locale pendant une tache en cours.
-
-Utilise plutot `grill-me` quand l'utilisateur veut challenger un plan complet, explorer les branches de decision, ou obtenir un plan recommande avant implementation.
-
-Utilise plutot un workflow de debugging quand le probleme principal est une erreur observee, un test qui echoue, ou un comportement inattendu a diagnostiquer systematiquement.
+- Préserve le plan existant par défaut.
+- Si le plan complet doit être remis en cause, utilise plutôt `grill-me`.
+- Si le problème principal est un bug observé ou un test en échec, utilise plutôt un workflow de debugging systématique.
+- Si la meilleure décision est de ne rien changer, dis-le explicitement.
