@@ -11,6 +11,7 @@ $repoRoot = $PSScriptRoot
 $skills = @(
     @{ Name = 'grill-me'; Root = $AgentsSkillsRoot }
     @{ Name = 'guide-me'; Root = $CodexSkillsRoot }
+    @{ Name = 'orchestrate'; Root = $CodexSkillsRoot }
     @{ Name = 'teach'; Root = $CodexSkillsRoot }
     @{ Name = 'writing-great-skills'; Root = $CodexSkillsRoot }
 )

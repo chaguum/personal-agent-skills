@@ -8,6 +8,7 @@ Canonical repository for personal Codex and agent skills.
 | --- | --- |
 | `grill-me` | `~/.agents/skills/grill-me` |
 | `guide-me` | `~/.codex/skills/guide-me` |
+| `orchestrate` | `~/.codex/skills/orchestrate` |
 | `teach` | `~/.codex/skills/teach` |
 | `writing-great-skills` | `~/.codex/skills/writing-great-skills` |
 

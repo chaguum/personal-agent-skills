@@ -22,6 +22,7 @@ try {
 
     Assert-True (Test-Path (Join-Path $agentsRoot 'grill-me\SKILL.md')) 'grill-me must install under the agents root'
     Assert-True (Test-Path (Join-Path $codexRoot 'guide-me\SKILL.md')) 'guide-me must install under the Codex root'
+    Assert-True (Test-Path (Join-Path $codexRoot 'orchestrate\session-review.md')) 'orchestrate must install with its review protocol'
     Assert-True (Test-Path (Join-Path $codexRoot 'teach\SKILL.md')) 'teach must install under the Codex root'
     Assert-True (Test-Path (Join-Path $codexRoot 'writing-great-skills\GLOSSARY.md')) 'writing-great-skills must include its glossary'
 

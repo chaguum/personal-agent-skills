@@ -31,10 +31,4 @@ Pour chacune : question, impact, caractère bloquant ou non, et moyen de la rés
 ## Plan recommandé
 Étapes ordonnées avec dépendances, résultat attendu et critère de vérification.
 
-## Découpage conseillé des sessions
-Si pertinent, objectif et état de sortie attendu pour chaque session.
-
-## Prochaine action recommandée
-Une seule action immédiate et concrète.
-
 Ne code rien pendant ce skill, sauf si l’utilisateur le demande explicitement.
