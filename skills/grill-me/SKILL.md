@@ -17,12 +17,24 @@ Pour chaque question :
 
 Évite les questions inutiles ou purement théoriques. Concentre-toi sur ce qui peut changer l’implémentation, l’architecture, les tests ou les risques.
 
-N’arrête l’interrogatoire que lorsque chaque branche de décision pertinente est résolue ou explicitement consignée dans les incertitudes restantes. Produis ensuite :
+N’arrête l’interrogatoire que lorsque chaque branche de décision pertinente est résolue ou explicitement consignée dans les incertitudes restantes. Produis ensuite une synthèse autonome :
+
+## Compréhension partagée
+Objectif, périmètre, contraintes et critères de réussite.
 
 ## Décisions retenues
+Pour chaque décision : choix, raison et impact.
+
 ## Incertitudes restantes
+Pour chacune : question, impact, caractère bloquant ou non, et moyen de la résoudre.
+
 ## Plan recommandé
-## Découpage conseillé des sessions, si pertinent
+Étapes ordonnées avec dépendances, résultat attendu et critère de vérification.
+
+## Découpage conseillé des sessions
+Si pertinent, objectif et état de sortie attendu pour chaque session.
+
 ## Prochaine action recommandée
+Une seule action immédiate et concrète.
 
 Ne code rien pendant ce skill, sauf si l’utilisateur le demande explicitement.
