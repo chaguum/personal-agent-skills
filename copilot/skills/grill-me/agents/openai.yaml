@@ -1,0 +1,7 @@
+interface:
+  display_name: "Grill Me"
+  short_description: "Challenger exhaustivement un plan"
+  default_prompt: "Utilise $grill-me pour challenger ce plan sans relache."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,22 +1,34 @@
 # Personal Agent Skills
 
-Canonical repository for personal Codex and agent skills.
+Canonical repository for personal Codex and GitHub Copilot skills.
 
-## Skills
+## Harnesses
 
-| Skill | Installation target |
+Each harness owns an independent copy of every skill:
+
+| Canonical source | Installation target |
 | --- | --- |
-| `grill-me` | `~/.agents/skills/grill-me` |
-| `guide-me` | `~/.codex/skills/guide-me` |
-| `orchestrate` | `~/.codex/skills/orchestrate` |
-| `teach` | `~/.codex/skills/teach` |
-| `writing-great-skills` | `~/.codex/skills/writing-great-skills` |
+| `codex/skills/*` | `~/.codex/skills/*` |
+| `copilot/skills/*` | `~/.agents/skills/*` |
+
+The two trees start from the same skill inventory but may diverge when their
+harness capabilities require different workflows. Edit the harness-specific
+copy only; do not assume a change applies to both.
+
+Current skills in both trees:
+
+- `grill-me`
+- `guide-me`
+- `orchestrate`
+- `teach`
+- `writing-great-skills`
 
 `writing-great-skills` is adapted for Codex from [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills).
 
 ## Source-of-truth workflow
 
-Edit skills only under `skills/`, commit the changes, then install them:
+Edit skills under the relevant harness directory, commit the changes, then
+install both trees:
 
 ```powershell
 .\install.ps1 -Force

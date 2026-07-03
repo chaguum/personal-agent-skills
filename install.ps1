@@ -1,19 +1,25 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [string]$CodexSkillsRoot = (Join-Path $HOME '.codex\skills'),
-    [string]$AgentsSkillsRoot = (Join-Path $HOME '.agents\skills'),
+    [Alias('AgentsSkillsRoot')]
+    [string]$CopilotSkillsRoot = (Join-Path $HOME '.agents\skills'),
     [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = $PSScriptRoot
 
-$skills = @(
-    @{ Name = 'grill-me'; Root = $AgentsSkillsRoot }
-    @{ Name = 'guide-me'; Root = $CodexSkillsRoot }
-    @{ Name = 'orchestrate'; Root = $CodexSkillsRoot }
-    @{ Name = 'teach'; Root = $CodexSkillsRoot }
-    @{ Name = 'writing-great-skills'; Root = $CodexSkillsRoot }
+$skillNames = @(
+    'grill-me'
+    'guide-me'
+    'orchestrate'
+    'teach'
+    'writing-great-skills'
+)
+
+$harnesses = @(
+    @{ Name = 'codex'; SourceRoot = (Join-Path $repoRoot 'codex\skills'); TargetRoot = $CodexSkillsRoot }
+    @{ Name = 'copilot'; SourceRoot = (Join-Path $repoRoot 'copilot\skills'); TargetRoot = $CopilotSkillsRoot }
 )
 
 function Get-TreeFingerprint {
@@ -58,34 +64,36 @@ function Assert-SafeTarget {
     }
 }
 
-foreach ($skill in $skills) {
-    $source = Join-Path (Join-Path $repoRoot 'skills') $skill.Name
-    $targetRoot = [System.IO.Path]::GetFullPath($skill.Root)
-    $target = Join-Path $targetRoot $skill.Name
+foreach ($harness in $harnesses) {
+    foreach ($skillName in $skillNames) {
+        $source = Join-Path $harness.SourceRoot $skillName
+        $targetRoot = [System.IO.Path]::GetFullPath($harness.TargetRoot)
+        $target = Join-Path $targetRoot $skillName
 
-    if (-not (Test-Path -LiteralPath $source -PathType Container)) {
-        throw "Canonical skill is missing: $source"
-    }
-
-    Assert-SafeTarget -Root $targetRoot -Target $target
-
-    if (Test-TreesEqual -Source $source -Target $target) {
-        Write-Output "Up to date: $($skill.Name)"
-        continue
-    }
-
-    if ((Test-Path -LiteralPath $target) -and -not $Force) {
-        throw "Installed skill differs from the repository: $target. Re-run with -Force to replace it."
-    }
-
-    if ($PSCmdlet.ShouldProcess($target, "Install canonical skill $($skill.Name)")) {
-        New-Item -ItemType Directory -Force -Path $targetRoot | Out-Null
-
-        if (Test-Path -LiteralPath $target) {
-            Remove-Item -Recurse -Force -LiteralPath $target
+        if (-not (Test-Path -LiteralPath $source -PathType Container)) {
+            throw "Canonical $($harness.Name) skill is missing: $source"
         }
 
-        Copy-Item -Recurse -LiteralPath $source -Destination $target
-        Write-Output "Installed: $($skill.Name) -> $target"
+        Assert-SafeTarget -Root $targetRoot -Target $target
+
+        if (Test-TreesEqual -Source $source -Target $target) {
+            Write-Output "Up to date: $($harness.Name)/$skillName"
+            continue
+        }
+
+        if ((Test-Path -LiteralPath $target) -and -not $Force) {
+            throw "Installed skill differs from the repository: $target. Re-run with -Force to replace it."
+        }
+
+        if ($PSCmdlet.ShouldProcess($target, "Install canonical $($harness.Name) skill $skillName")) {
+            New-Item -ItemType Directory -Force -Path $targetRoot | Out-Null
+
+            if (Test-Path -LiteralPath $target) {
+                Remove-Item -Recurse -Force -LiteralPath $target
+            }
+
+            Copy-Item -Recurse -LiteralPath $source -Destination $target
+            Write-Output "Installed: $($harness.Name)/$skillName -> $target"
+        }
     }
 }

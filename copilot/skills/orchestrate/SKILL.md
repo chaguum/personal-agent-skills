@@ -25,7 +25,7 @@ Cette étape est terminée lorsque les règles locales, l’état Git et l’ét
    - respecte le format imposé par `AGENTS.md` ou le fichier existant ;
    - si `PROGRESS.md` est absent et qu’aucun format local n’est défini, lis `progress-template.md` puis crée-le ;
    - transforme le plan en missions strictement séquentielles.
-5. Si le plan contient exactement une mission cohérente et vérifiable, propose de l’exécuter dans la session actuelle. Après confirmation explicite de l’utilisateur, lis `direct-execution.md` et applique-le intégralement.
+5. Si le plan contient exactement une mission cohérente et vérifiable, lis `direct-execution.md` et applique intégralement son protocole d’éligibilité et d’autorisation.
 6. Sinon, utilise le workflow par sous-sessions.
 
 ### Orchestration existante
@@ -35,6 +35,8 @@ Résume l’état de `PROGRESS.md`, vérifie qu’il correspond au dépôt, puis
 ### Signal `session done`
 
 Lis `session-review.md` et applique intégralement son protocole. `session done` déclenche toujours un audit ; ce n’est jamais une acceptation automatique.
+
+Le routage est terminé lorsque la prochaine action autorisée est déterminée et que son éventuelle attente utilisateur est explicite.
 
 ## Générer une mission
 

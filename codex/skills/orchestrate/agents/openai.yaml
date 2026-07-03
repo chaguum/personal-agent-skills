@@ -1,0 +1,7 @@
+interface:
+  display_name: "Orchestrate"
+  short_description: "Piloter un plan directement ou via des agents Codex"
+  default_prompt: "Use $orchestrate to design and execute this project through sequential Codex agents."
+
+policy:
+  allow_implicit_invocation: false

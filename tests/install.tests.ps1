@@ -4,7 +4,8 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $installer = Join-Path $repoRoot 'install.ps1'
 $sandbox = Join-Path ([System.IO.Path]::GetTempPath()) "personal-agent-skills-$([guid]::NewGuid())"
 $codexRoot = Join-Path $sandbox '.codex\skills'
-$agentsRoot = Join-Path $sandbox '.agents\skills'
+$copilotRoot = Join-Path $sandbox '.agents\skills'
+$skillNames = @('grill-me', 'guide-me', 'orchestrate', 'teach', 'writing-great-skills')
 
 function Assert-True {
     param(
@@ -18,30 +19,33 @@ function Assert-True {
 }
 
 try {
-    & $installer -CodexSkillsRoot $codexRoot -AgentsSkillsRoot $agentsRoot
+    & $installer -CodexSkillsRoot $codexRoot -CopilotSkillsRoot $copilotRoot
 
-    Assert-True (Test-Path (Join-Path $agentsRoot 'grill-me\SKILL.md')) 'grill-me must install under the agents root'
-    Assert-True (Test-Path (Join-Path $codexRoot 'guide-me\SKILL.md')) 'guide-me must install under the Codex root'
-    Assert-True (Test-Path (Join-Path $codexRoot 'orchestrate\session-review.md')) 'orchestrate must install with its review protocol'
-    Assert-True (Test-Path (Join-Path $codexRoot 'teach\SKILL.md')) 'teach must install under the Codex root'
-    Assert-True (Test-Path (Join-Path $codexRoot 'writing-great-skills\GLOSSARY.md')) 'writing-great-skills must include its glossary'
+    foreach ($skillName in $skillNames) {
+        Assert-True (Test-Path (Join-Path $codexRoot "$skillName\SKILL.md")) "$skillName must install under the Codex root"
+        Assert-True (Test-Path (Join-Path $copilotRoot "$skillName\SKILL.md")) "$skillName must install under the Copilot root"
+    }
+    Assert-True (Test-Path (Join-Path $codexRoot 'orchestrate\agent-review.md')) 'Codex orchestrate must install its automatic agent review protocol'
+    Assert-True (Test-Path (Join-Path $copilotRoot 'orchestrate\session-review.md')) 'Copilot orchestrate must retain its manual session review protocol'
+    Assert-True (Test-Path (Join-Path $codexRoot 'writing-great-skills\GLOSSARY.md')) 'Codex writing-great-skills must include its glossary'
+    Assert-True (Test-Path (Join-Path $copilotRoot 'writing-great-skills\GLOSSARY.md')) 'Copilot writing-great-skills must include its glossary'
 
-    & $installer -CodexSkillsRoot $codexRoot -AgentsSkillsRoot $agentsRoot
+    & $installer -CodexSkillsRoot $codexRoot -CopilotSkillsRoot $copilotRoot
 
     $guideTarget = Join-Path $codexRoot 'guide-me\SKILL.md'
     Add-Content -LiteralPath $guideTarget -Value "`nlocal divergence"
 
     $blocked = $false
     try {
-        & $installer -CodexSkillsRoot $codexRoot -AgentsSkillsRoot $agentsRoot
+        & $installer -CodexSkillsRoot $codexRoot -CopilotSkillsRoot $copilotRoot
     }
     catch {
         $blocked = $true
     }
     Assert-True $blocked 'a divergent installed skill must not be overwritten without -Force'
 
-    & $installer -CodexSkillsRoot $codexRoot -AgentsSkillsRoot $agentsRoot -Force
-    $sourceGuide = Get-Content -Raw -LiteralPath (Join-Path $repoRoot 'skills\guide-me\SKILL.md')
+    & $installer -CodexSkillsRoot $codexRoot -CopilotSkillsRoot $copilotRoot -Force
+    $sourceGuide = Get-Content -Raw -LiteralPath (Join-Path $repoRoot 'codex\skills\guide-me\SKILL.md')
     $installedGuide = Get-Content -Raw -LiteralPath $guideTarget
     Assert-True ($sourceGuide -ceq $installedGuide) '-Force must restore the canonical repository version'
 
