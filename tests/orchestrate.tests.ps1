@@ -18,6 +18,7 @@ function Assert-Contains {
 
 $requiredFiles = @(
     'SKILL.md',
+    'direct-execution.md',
     'progress-template.md',
     'session-prompt-template.md',
     'session-review.md',
@@ -32,6 +33,7 @@ foreach ($relativePath in $requiredFiles) {
 }
 
 $skill = Get-Content -Raw -Encoding utf8 (Join-Path $orchestrateRoot 'SKILL.md')
+$directExecution = Get-Content -Raw -Encoding utf8 (Join-Path $orchestrateRoot 'direct-execution.md')
 $progressTemplate = Get-Content -Raw -Encoding utf8 (Join-Path $orchestrateRoot 'progress-template.md')
 $promptTemplate = Get-Content -Raw -Encoding utf8 (Join-Path $orchestrateRoot 'session-prompt-template.md')
 $review = Get-Content -Raw -Encoding utf8 (Join-Path $orchestrateRoot 'session-review.md')
@@ -43,6 +45,11 @@ Assert-Contains $skill 'Use `grill-me`' 'orchestrate must require grill-me for i
 Assert-Contains $skill 'AGENTS.md' 'orchestrate must read repository instructions first'
 Assert-Contains $skill 'session done' 'orchestrate must route completion signals'
 Assert-Contains $skill 'uniquement le prochain prompt' 'orchestrate must generate one mission at a time'
+Assert-Contains $skill 'direct-execution.md' 'orchestrate must disclose the direct execution branch conditionally'
+Assert-Contains $directExecution 'une seule mission' 'direct execution must require a single mission'
+Assert-Contains $directExecution 'confirmation explicite' 'direct execution must require explicit user approval'
+Assert-Contains $directExecution 'PROGRESS.md' 'direct execution must persist its result'
+Assert-Contains $directExecution 'commit' 'direct execution must create a validated checkpoint'
 Assert-Contains $progressTemplate 'Mission active' 'the progress template must preserve resumable state'
 Assert-Contains $promptTemplate 'aucun commit' 'subsessions must leave commits to the orchestrator'
 Assert-Contains $review 'seule correction' 'review must enforce the correction limit'

@@ -1,9 +1,9 @@
 ---
 name: orchestrate
-description: Piloter un besoin de sa conception à sa réalisation au moyen d’un plan validé et de sous-sessions séquentielles lancées manuellement.
+description: Piloter un besoin de sa conception à sa réalisation, directement ou au moyen de sous-sessions séquentielles.
 ---
 
-Reste responsable du résultat global, de la conception à la réalisation. Ne modifie jamais le code : inspecte le dépôt, lance des commandes de vérification, maintiens le contexte d’orchestration et crée les commits des missions acceptées.
+Reste responsable du résultat global, de la conception à la réalisation. Par défaut, ne modifie pas le code : inspecte le dépôt, lance des commandes de vérification, maintiens le contexte d’orchestration et crée les commits des missions acceptées. L’exécution directe constitue l’unique exception.
 
 ## Initialiser le contexte
 
@@ -25,6 +25,8 @@ Cette étape est terminée lorsque les règles locales, l’état Git et l’ét
    - respecte le format imposé par `AGENTS.md` ou le fichier existant ;
    - si `PROGRESS.md` est absent et qu’aucun format local n’est défini, lis `progress-template.md` puis crée-le ;
    - transforme le plan en missions strictement séquentielles.
+5. Si le plan contient exactement une mission cohérente et vérifiable, propose de l’exécuter dans la session actuelle. Après confirmation explicite de l’utilisateur, lis `direct-execution.md` et applique-le intégralement.
+6. Sinon, utilise le workflow par sous-sessions.
 
 ### Orchestration existante
 
@@ -49,7 +51,7 @@ Les missions sont toujours séquentielles et lancées manuellement par l’utili
 
 ## Limites
 
-- Ne modifie jamais le code ou les tests.
+- Ne modifie jamais le code ou les tests hors de la voie explicitement autorisée par `direct-execution.md`.
 - Tu peux modifier uniquement les fichiers de contexte d’orchestration autorisés, inspecter les changements, exécuter des commandes et créer un commit après acceptation.
 - Ne lance pas toi-même les sous-sessions.
 - Ne génère jamais plus d’une mission active.
