@@ -10,6 +10,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = $PSScriptRoot
 
 $skillNames = @(
+    'bootstrap-me'
     'grill-me'
     'guide-me'
     'orchestrate'

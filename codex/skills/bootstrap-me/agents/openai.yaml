@@ -1,0 +1,7 @@
+interface:
+  display_name: "Bootstrap Me"
+  short_description: "Fonder un projet et son harness avant orchestration"
+  default_prompt: "Use $bootstrap-me to turn this project idea into a founded, documented repository ready for orchestration."
+
+policy:
+  allow_implicit_invocation: false

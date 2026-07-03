@@ -5,7 +5,7 @@ $installer = Join-Path $repoRoot 'install.ps1'
 $sandbox = Join-Path ([System.IO.Path]::GetTempPath()) "personal-agent-skills-$([guid]::NewGuid())"
 $codexRoot = Join-Path $sandbox '.codex\skills'
 $copilotRoot = Join-Path $sandbox '.agents\skills'
-$skillNames = @('grill-me', 'guide-me', 'orchestrate', 'teach', 'writing-great-skills')
+$skillNames = @('bootstrap-me', 'grill-me', 'guide-me', 'orchestrate', 'teach', 'writing-great-skills')
 
 function Assert-True {
     param(

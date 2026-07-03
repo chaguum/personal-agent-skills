@@ -17,6 +17,7 @@ copy only; do not assume a change applies to both.
 
 Current skills in both trees:
 
+- `bootstrap-me`
 - `grill-me`
 - `guide-me`
 - `orchestrate`
@@ -35,6 +36,15 @@ install both trees:
 ```
 
 Without `-Force`, the installer refuses to overwrite an installed skill that differs from the repository. Re-running it when everything is synchronized is safe.
+
+Codex also discovers `$HOME/.agents/skills`. Keep the Copilot installations
+while hiding their duplicate entries from Codex with:
+
+```powershell
+.\configure-codex.ps1
+```
+
+Restart Codex after changing its configuration.
 
 Preview filesystem changes with:
 
