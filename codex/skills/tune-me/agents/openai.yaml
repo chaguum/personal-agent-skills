@@ -1,0 +1,7 @@
+interface:
+  display_name: "Tune Me"
+  short_description: "Ajustements UX/UI rapides et interactifs"
+  default_prompt: "Use $tune-me to apply this small UX/UI adjustment through the integrated browser."
+
+policy:
+  allow_implicit_invocation: false

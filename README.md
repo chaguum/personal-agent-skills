@@ -15,7 +15,7 @@ The two trees start from the same skill inventory but may diverge when their
 harness capabilities require different workflows. Edit the harness-specific
 copy only; do not assume a change applies to both.
 
-Current skills in both trees:
+Current skills shared by both trees:
 
 - `bootstrap-me`
 - `grill-me`
@@ -23,6 +23,10 @@ Current skills in both trees:
 - `orchestrate`
 - `teach`
 - `writing-great-skills`
+
+Codex-only skills:
+
+- `tune-me`
 
 `writing-great-skills` is adapted for Codex from [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills).
 

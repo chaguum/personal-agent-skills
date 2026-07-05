@@ -9,7 +9,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $repoRoot = $PSScriptRoot
 
-$skillNames = @(
+$sharedSkillNames = @(
     'bootstrap-me'
     'grill-me'
     'guide-me'
@@ -19,8 +19,18 @@ $skillNames = @(
 )
 
 $harnesses = @(
-    @{ Name = 'codex'; SourceRoot = (Join-Path $repoRoot 'codex\skills'); TargetRoot = $CodexSkillsRoot }
-    @{ Name = 'copilot'; SourceRoot = (Join-Path $repoRoot 'copilot\skills'); TargetRoot = $CopilotSkillsRoot }
+    @{
+        Name = 'codex'
+        SourceRoot = (Join-Path $repoRoot 'codex\skills')
+        TargetRoot = $CodexSkillsRoot
+        SkillNames = $sharedSkillNames + @('tune-me')
+    }
+    @{
+        Name = 'copilot'
+        SourceRoot = (Join-Path $repoRoot 'copilot\skills')
+        TargetRoot = $CopilotSkillsRoot
+        SkillNames = $sharedSkillNames
+    }
 )
 
 function Get-TreeFingerprint {
@@ -66,7 +76,7 @@ function Assert-SafeTarget {
 }
 
 foreach ($harness in $harnesses) {
-    foreach ($skillName in $skillNames) {
+    foreach ($skillName in $harness.SkillNames) {
         $source = Join-Path $harness.SourceRoot $skillName
         $targetRoot = [System.IO.Path]::GetFullPath($harness.TargetRoot)
         $target = Join-Path $targetRoot $skillName
