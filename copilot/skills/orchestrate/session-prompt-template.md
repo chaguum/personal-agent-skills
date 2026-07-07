@@ -18,7 +18,8 @@ Produis un prompt autonome à copier-coller dans une nouvelle sous-session. Il d
    - Préserver les changements étrangers.
    - Ne crée aucun commit : l’orchestratrice commit après audit.
    - Maintenir dans `PROGRESS.md` un état de reprise synthétique : résultat courant, décisions durables, vérifications, risques et prochaine action. Placer le détail des fichiers modifiés et des preuves dans la réponse de clôture.
-   - Si le plan global doit changer, ne pas élargir le périmètre : documenter la découverte, les options, la recommandation et l’impact dans `PROGRESS.md`, puis s’arrêter.
+   - Avant la clôture, passer l’état de la mission à `attente-audit` dans le plan validé.
+   - Si le plan global doit changer ou si un arbitrage utilisateur est requis, ne pas élargir le périmètre : documenter la découverte, les options, la recommandation et l’impact dans `PROGRESS.md`, passer la mission à `attente-utilisateur`, puis s’arrêter.
 5. **Clôture**
    - Résumer les modifications et les preuves de vérification.
    - Demander à l’utilisateur de revenir dans la session orchestratrice avec `session done`.

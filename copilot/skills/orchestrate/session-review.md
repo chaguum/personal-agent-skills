@@ -12,10 +12,10 @@ Appliquer ce protocole après chaque signal `session done`.
 
 ## Si la mission est acceptée
 
-1. Marquer la mission terminée dans `PROGRESS.md` et condenser son historique.
+1. Marquer la mission `terminée` dans le plan validé de `PROGRESS.md`, puis condenser son historique.
 2. Si des missions restent :
    - préparer uniquement la suivante avec `session-prompt-template.md` ;
-   - l’inscrire comme mission active dans `PROGRESS.md`.
+   - l’inscrire comme `mission-active` dans `PROGRESS.md`.
 3. Si c’était la dernière mission :
    - effectuer l’audit global selon la Definition of Done et les critères du plan ;
    - marquer l’orchestration terminée seulement si tous sont satisfaits.
@@ -26,10 +26,10 @@ Appliquer ce protocole après chaque signal `session done`.
 ## Si la mission est refusée
 
 - Si aucune correction n’a encore été tentée :
-  1. marquer `correction-active` et `Nombre de corrections de la mission active : 1` dans `PROGRESS.md` ;
-  2. produire un prompt correctif destiné à la même sous-session ;
+  1. marquer la mission `correction-active`, puis `correction-active` et `Nombre de corrections de la mission active : 1` dans `PROGRESS.md` ;
+  2. lire `correction-prompt-template.md` puis produire un prompt correctif destiné à la même sous-session ;
   3. décrire uniquement les écarts prouvés, les corrections attendues et les vérifications à rejouer ;
   4. ne créer aucun commit.
-- Si une correction a déjà été tentée, suspendre la mission. Présenter les écarts persistants et leurs preuves, puis demander à l’utilisateur d’arbitrer entre nouvelle correction, replanification ou abandon. Ne reprendre qu’après sa décision explicite.
+- Si une correction a déjà été tentée, marquer la mission `attente-utilisateur`, puis suspendre la mission. Présenter les écarts persistants et leurs preuves, puis demander à l’utilisateur d’arbitrer entre nouvelle correction, replanification ou abandon. Ne reprendre qu’après sa décision explicite.
 
 Chaque correction incrémente `Nombre de corrections de la mission active` dans `PROGRESS.md`. Le signal suivant reste `session done` : cet état indique s’il s’agit de la première revue ou d’une revue corrective.

@@ -45,6 +45,23 @@ foreach ($relativePath in $requiredFiles) {
     }
 }
 
+$requiredCopilotFiles = @(
+    'SKILL.md',
+    'direct-execution.md',
+    'progress-template.md',
+    'session-prompt-template.md',
+    'correction-prompt-template.md',
+    'session-review.md',
+    'agents\openai.yaml'
+)
+
+foreach ($relativePath in $requiredCopilotFiles) {
+    $path = Join-Path $copilotOrchestrateRoot $relativePath
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+        throw "Missing Copilot orchestrate file: $relativePath"
+    }
+}
+
 $skill = Get-Content -Raw -Encoding utf8 (Join-Path $codexOrchestrateRoot 'SKILL.md')
 $directExecution = Get-Content -Raw -Encoding utf8 (Join-Path $codexOrchestrateRoot 'direct-execution.md')
 $progressTemplate = Get-Content -Raw -Encoding utf8 (Join-Path $codexOrchestrateRoot 'progress-template.md')
@@ -54,13 +71,19 @@ $orchestrateConfig = Get-Content -Raw -Encoding utf8 (Join-Path $codexOrchestrat
 $grill = Get-Content -Raw -Encoding utf8 (Join-Path $codexGrillRoot 'SKILL.md')
 $grillConfig = Get-Content -Raw -Encoding utf8 (Join-Path $codexGrillRoot 'agents\openai.yaml')
 $copilotSkill = Get-Content -Raw -Encoding utf8 (Join-Path $copilotOrchestrateRoot 'SKILL.md')
+$copilotProgressTemplate = Get-Content -Raw -Encoding utf8 (Join-Path $copilotOrchestrateRoot 'progress-template.md')
+$copilotMissionPrompt = Get-Content -Raw -Encoding utf8 (Join-Path $copilotOrchestrateRoot 'session-prompt-template.md')
+$copilotReview = Get-Content -Raw -Encoding utf8 (Join-Path $copilotOrchestrateRoot 'session-review.md')
+$copilotCorrectionPrompt = Get-Content -Raw -Encoding utf8 (Join-Path $copilotOrchestrateRoot 'correction-prompt-template.md')
 $codexText = $skill + $directExecution + $missionTemplate + $review + $progressTemplate
 
 Assert-Contains $skill 'Use `grill-me`' 'orchestrate must require grill-me for initial planning'
 Assert-Contains $skill 'AGENTS.md' 'orchestrate must read repository instructions first'
-Assert-Contains $skill 'demande explicite de d' 'invoking Codex orchestrate must authorize agent delegation'
-Assert-Contains $skill 'un seul agent de mission actif' 'Codex orchestrate must execute missions sequentially'
-Assert-Contains $skill 'attends son r' 'Codex orchestrate must wait for the active agent'
+Assert-Contains $skill 'sous-agents Codex internes' 'invoking Codex orchestrate must authorize internal subagent delegation'
+Assert-Contains $skill 'threads utilisateur visibles' 'Codex orchestrate must not use visible user threads for internal missions'
+Assert-Contains $skill 'un seul sous-agent de mission actif' 'Codex orchestrate must execute missions sequentially'
+Assert-Contains $skill 'attends son r' 'Codex orchestrate must wait for the active subagent'
+Assert-Contains $skill 'create_thread' 'Codex orchestrate must avoid create_thread for internal missions'
 Assert-NotContains $codexText 'session done' 'Codex orchestrate must not require a manual completion signal'
 Assert-NotContains $codexText 'copier-coller' 'Codex orchestrate must not require manual prompt transfer'
 Assert-NotContains $codexText 'session-prompt-template.md' 'Codex orchestrate must not reference the removed manual template'
@@ -80,9 +103,22 @@ Assert-Contains $review 'replanification ou abandon' 'review must ask for arbitr
 Assert-Contains $review 'envoyer au m' 'corrections must be routed back to the active agent'
 Assert-Contains $review 'Definition of Done' 'review must apply the repository DoD'
 Assert-Contains $orchestrateConfig 'allow_implicit_invocation: false' 'orchestrate must be user-invoked'
-Assert-Contains $orchestrateConfig 'directement ou via des agents Codex' 'the UI description must expose both execution branches'
+Assert-Contains $orchestrateConfig 'directement ou via des sous-agents Codex' 'the UI description must expose both execution branches'
 Assert-Contains $grillConfig 'allow_implicit_invocation: true' 'grill-me must be reachable by orchestrate'
 Assert-Contains $copilotSkill 'session done' 'Copilot orchestrate must retain the manual session workflow'
+Assert-Contains $copilotSkill 'git status, le diff complet' 'Copilot orchestrate should reconcile PROGRESS with the repository state during resume'
+Assert-Contains $copilotSkill 'nommer exactement une prochaine action autoris' 'Copilot orchestrate should classify resume state into a single next action'
+Assert-Contains $copilotProgressTemplate 'non-d' 'Copilot progress template should normalize per-mission states'
+Assert-Contains $copilotProgressTemplate 'attente-audit | correction-active | attente-utilisateur | termin' 'Copilot progress template should normalize per-mission states'
+Assert-Contains $copilotProgressTemplate 'Workflow de mission' 'Copilot progress template should centralize mission state workflow'
+Assert-Contains $copilotProgressTemplate 'mission-active -> attente-audit' 'Copilot progress template should define allowed mission state transitions'
+Assert-Contains $copilotProgressTemplate 'attente-audit -> termin' 'Copilot progress template should define post-audit mission transitions'
+Assert-Contains $copilotProgressTemplate 'correction-active -> attente-audit | attente-utilisateur | bloqu' 'Copilot progress template should define correction-state mission transitions'
+Assert-Contains $copilotMissionPrompt 'attente-audit' 'Copilot mission prompt should move completed work into audit waiting state'
+Assert-Contains $copilotReview 'correction-prompt-template.md' 'Copilot review should use a dedicated correction prompt template'
+Assert-Contains $copilotReview 'mission `attente-utilisateur`' 'Copilot review should wait for user arbitration after repeated failure'
+Assert-Contains $copilotCorrectionPrompt 'carts prouv' 'Copilot correction prompt should focus on proven gaps only'
+Assert-Contains $copilotCorrectionPrompt 'Interdire tout changement sans lien direct' 'Copilot correction prompt should forbid scope expansion'
 
 if ($grill.Contains('## Découpage conseillé des sessions') -or $grill.Contains('## Prochaine action recommandée')) {
     throw 'grill-me still owns orchestration-specific output'

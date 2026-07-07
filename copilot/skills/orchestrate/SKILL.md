@@ -30,7 +30,19 @@ Cette étape est terminée lorsque les règles locales, l’état Git et l’ét
 
 ### Orchestration existante
 
-Résume l’état de `PROGRESS.md`, vérifie qu’il correspond au dépôt, puis reprends à la mission active ou à la prochaine action. Ne recommence pas la conception sauf si le plan est explicitement invalidé.
+1. Relis `PROGRESS.md`, `git status`, le diff complet et l’historique récent.
+2. Réconcilie `PROGRESS.md` avec git status, le diff complet et l’historique récent, puis réconcilie la mission active, son état, son nombre de corrections et la prochaine action avec le dépôt réel.
+3. Si une information obligatoire manque dans `PROGRESS.md`, si plusieurs états semblent vrais en même temps, ou si le dépôt contredit l’état annoncé, suspends la reprise et demande un arbitrage utilisateur avant toute autre action.
+4. Classe la reprise dans exactement un cas :
+   - `attente-validation` : attends la validation du plan et ne génère aucune mission ;
+   - `mission-active` sans changement de mission dans le dépôt : régénère uniquement le prompt de la mission active avec `session-prompt-template.md` ;
+   - `mission-active` avec changements cohérents avec la mission : attends `session done`, sauf si l’utilisateur demande explicitement un audit immédiat ;
+   - `correction-active` : attends `session done` pour auditer la correction, ou régénère uniquement le prompt correctif si la même sous-session doit être relancée ;
+   - `bloqué` : résume le blocage exact et demande l’arbitrage attendu ;
+   - `terminé` : vérifie que l’audit global et le dernier commit attendu existent avant d’annoncer la clôture.
+5. Si aucun cas ou plusieurs cas s’appliquent, n’avance pas : la reprise n’est autorisée que lorsque `git status`, le diff complet et `PROGRESS.md` permettent de nommer exactement une prochaine action autorisée.
+
+Ne recommence pas la conception sauf si le plan est explicitement invalidé.
 
 ### Signal `session done`
 
