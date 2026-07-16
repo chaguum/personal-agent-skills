@@ -22,6 +22,10 @@ Si l’utilisateur refuse, préparer la prochaine mission avec `agent-mission-te
 
 ## Exécuter
 
+Utiliser le profil de vérification du harness adapté à la mission et conserver
+son manifeste. Ne rejouer une preuve verte que si le commit, l’environnement ou
+le périmètre a changé.
+
 Après confirmation explicite :
 
 1. inscrire dans `PROGRESS.md` que la mission unique passe en exécution directe ;

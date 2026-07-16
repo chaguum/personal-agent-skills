@@ -27,6 +27,7 @@ Current skills shared by both trees:
 Codex-only skills:
 
 - `tune-me`
+- `create-thread`
 
 `writing-great-skills` is adapted for Codex from [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills).
 
