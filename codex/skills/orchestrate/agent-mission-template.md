@@ -8,6 +8,9 @@ Produis une mission autonome à transmettre directement à un agent Codex. Elle 
    - Inspecter le code concerné avant de modifier quoi que ce soit.
 2. **Mission**
    - Un objectif unique.
+   - Le type : `implementation`, `correction`, `audit` ou `release`.
+   - Le contexte differentiel a charger, sans recopier le contexte global.
+   - Le profil de verification du harness et la regle de rejeu des preuves.
    - Le périmètre autorisé et les exclusions.
    - Les dépendances déjà satisfaites.
 3. **Résultat attendu**
@@ -19,8 +22,20 @@ Produis une mission autonome à transmettre directement à un agent Codex. Elle 
    - Ne crée aucun commit : l’orchestratrice commit après audit.
    - Maintenir dans `PROGRESS.md` un état de reprise synthétique : résultat courant, décisions durables, vérifications, risques et prochaine action. Placer le détail des fichiers modifiés et des preuves dans le retour final à l’orchestrateur.
    - Si le plan global doit changer, ne pas élargir le périmètre : documenter la découverte, les options, la recommandation et l’impact dans `PROGRESS.md`, puis s’arrêter.
+   - En cas de blocage environnemental, classer le blocage, conserver la preuve minimale et s’arrêter.
 5. **Clôture**
    - Résumer les modifications et les preuves de vérification.
    - Retourner le résultat à l’orchestrateur sans demander d’action intermédiaire à l’utilisateur.
 
 La mission est prête lorsqu’un agent sans autre contexte peut l’exécuter sans redemander les informations déjà présentes dans le dépôt.
+
+Le retour final utilise ce format :
+
+```text
+STATUS: accepted | rejected | blocked
+FILES:
+CHECKS:
+EVIDENCE:
+RISKS:
+NEXT_ACTION:
+```

@@ -49,9 +49,35 @@ Le routage est terminé lorsque la prochaine action autorisée est déterminée 
 
 Les missions sont toujours séquentielles. L’orchestrateur crée, pilote et attend les sous-agents sans transfert manuel par l’utilisateur.
 
+La délégation est terminée lorsque `PROGRESS.md` contient la mission active,
+son type, son profil de vérification et son agent, et que le sous-agent a reçu
+un périmètre unique avec une condition d’arrêt explicite.
+
 ## Garder le contexte lisible
 
 `PROGRESS.md` est un état de reprise, pas un journal exhaustif. Conserve l’état courant détaillé et un historique synthétique des missions terminées. Condense les détails devenus inutiles afin qu’un nouveau sous-agent puisse comprendre rapidement le projet, la mission active et la prochaine action.
+
+## Contrat de mission et preuves
+
+Avant de déléguer, classe la mission comme `implementation`, `correction`,
+`audit` ou `release`. Le prompt de mission doit être un contexte delta :
+conserver uniquement l’état valide, l’objectif, les fichiers, les exclusions,
+les critères et les contrôles spécifiques. Ne recopie pas le contexte global
+déjà présent dans le dépôt.
+
+Pour les dépôts qui exposent `tools/verify.mjs` ou un équivalent, utilise son
+profil adapté (`fast`, `level2`, `level3` ou `release`). Le profil `release` est
+réservé à l’intégration finale et ne doit pas être rejoué par chaque agent.
+Quand le dépôt expose `check:release`, réserve cette commande à la même étape
+finale.
+Conserve le manifeste de preuve et ne rejoue un contrôle que si le commit,
+l’environnement ou le périmètre a changé. Un blocage d’environnement doit être
+classé, documenté avec sa preuve minimale, puis arrêter l’exploration.
+
+Le retour de l’agent suit le format unique défini dans
+`agent-mission-template.md`. L’agent maintient uniquement l’état de sa mission
+dans `PROGRESS.md` ; l’orchestrateur reste propriétaire du plan global, de
+l’historique et de la décision d’acceptation.
 
 ## Limites
 

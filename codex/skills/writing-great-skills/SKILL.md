@@ -1,5 +1,6 @@
 ---
 name: writing-great-skills
+disable-model-invocation: true
 description: Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.
 ---
 
@@ -73,6 +74,8 @@ You win twice over: fewer tokens, _and_ a sharper hook for the agent to hang its
 ## Failure modes
 
 Use these to diagnose issues the user may be having with the skill.
+
+- **Negation** — steering by prohibition backfires: _don't think of an elephant_ names the elephant and makes it more available, not less. Prompt the **positive** — state the target behaviour so the banned one is never spoken; keep a prohibition only as a hard guardrail you can't phrase positively, and even then pair it with what to do instead.
 
 - **Premature completion** — ending a step before it's genuinely done, attention slipping to _being done_. Defence, in order: sharpen the completion criterion first (cheap, local); only if it is irreducibly fuzzy _and_ you observe the rush, hide the post-completion steps by splitting (the sequence cut).
 - **Duplication** — the same meaning in more than one place. Costs maintenance and tokens, and inflates a meaning's prominence on the ladder past its real rank.

@@ -4,6 +4,11 @@ Appliquer ce protocole dès que l’agent actif retourne son résultat.
 
 ## Auditer
 
+Lire le manifeste de vérification fourni par l’agent avant de relancer une
+commande. Ne pas rejouer une preuve verte si le commit, l’environnement et le
+périmètre correspondent. En cas d’échec, consulter d’abord le log de l’étape
+concernée et ne relancer que cette étape ou le profil rendu obsolète.
+
 1. Relire tous les `AGENTS.md` applicables et `PROGRESS.md`.
 2. Inspecter `git status`, le diff complet et l’historique récent.
 3. Vérifier qu’aucun commit n’a été créé par l’agent et qu’aucun changement étranger à la mission n’est inclus.

@@ -23,7 +23,7 @@ $harnesses = @(
         Name = 'codex'
         SourceRoot = (Join-Path $repoRoot 'codex\skills')
         TargetRoot = $CodexSkillsRoot
-        SkillNames = $sharedSkillNames + @('tune-me')
+        SkillNames = $sharedSkillNames + @('tune-me', 'create-thread')
     }
     @{
         Name = 'copilot'

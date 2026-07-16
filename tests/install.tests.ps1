@@ -6,7 +6,7 @@ $sandbox = Join-Path ([System.IO.Path]::GetTempPath()) "personal-agent-skills-$(
 $codexRoot = Join-Path $sandbox '.codex\skills'
 $copilotRoot = Join-Path $sandbox '.agents\skills'
 $sharedSkillNames = @('bootstrap-me', 'grill-me', 'guide-me', 'orchestrate', 'teach', 'writing-great-skills')
-$codexSkillNames = $sharedSkillNames + @('tune-me')
+$codexSkillNames = $sharedSkillNames + @('tune-me', 'create-thread')
 $copilotSkillNames = $sharedSkillNames
 
 function Assert-True {
